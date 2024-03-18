@@ -1,3 +1,4 @@
+import { Hash } from "crypto";
 import mongoose, { Schema, model, Document, Model } from "mongoose";
 
 interface userDocument extends Document {
@@ -35,7 +36,11 @@ const userSchema = new Schema<userDocument>(
   }
 );
 
+userSchema.pre('save', function(next){
+  if(!this.isModified('password')) return next()
 
+  await Hash
+})
 const userModel = model('User', userSchema);
 
 export default userModel as Model<userDocument>;
